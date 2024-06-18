@@ -14,3 +14,14 @@ module.exports.getExpeditions = async (req, res) => {
 		res.redirect("/");
 	}
 };
+
+module.exports.getNewExpedition = async (req, res) => {
+	console.log("router get recipes/OGnew.ejs");
+	try {
+		const allExpeditions = await Model.find({});
+		res.render("expeditions/new.ejs", { allExpeditions });
+	} catch (error) {
+		console.log("ERROR: get /new", error);
+		res.redirect("/recipes");
+	}
+};

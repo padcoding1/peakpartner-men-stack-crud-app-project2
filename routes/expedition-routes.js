@@ -4,6 +4,7 @@ const router = express.Router();
 const expeditions = require("../controllers/expedition-controller.js");
 
 router.route("/").get(expeditions.getExpeditions);
+router.route("/new").get(expeditions.newExpedition);
 /*
 router
 	.route("/signup")
@@ -30,32 +31,3 @@ router.route("/").get(expeditions.renderHome);
 module.exports = router;
 
 ////////////////////////
-/*
-router
-	.route("/")
-	.get(campgrounds.index))
-	.post(
-		isLoggedIn,
-		upload.array("image"),
-		validateSanitizeCampground,
-		campgrounds.createCampground)
-	);
-
-router.get("/new", isLoggedIn, campgrounds.newForm);
-
-router
-	.route("/:id")
-	.get(campgrounds.showCampground))
-	.put(
-		isLoggedIn,
-		upload.array("image"),
-		isOwner,
-		validateSanitizeCampground,
-		campgrounds.editCampground)
-	)
-	.delete(isLoggedIn, isOwner, campgrounds.deleteCampground));
-
-router.get("/:id/edit", isLoggedIn, isOwner, campgrounds.editForm));
-
-module.exports = router;
-*/
