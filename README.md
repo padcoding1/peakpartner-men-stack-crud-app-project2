@@ -7,9 +7,13 @@
 **PeakPartner**, a demonstration of a Full Stack (MEN) app with CRUD operations, is a platform where climbers and expedition leaders can register for and plan trips expeditions, respectively. **Expedition Leaders** can create scheduled **Expeditions** and **Climbers** can register for them. Climbers can see the **Destination** of a trip and the **Trip Dates**. In order to **register for a trip** and **join an Expedition**, or for any **expedition tasks (create, schedule, delete, add/remove climbers)**, all users must have an account with the appropriate **access level**. A registered user can have a **Climber** account or an **Expedition Leader** account. Leader accounts are essentially **Power Users**, capable of managing users and expeditions.
 
 PeakPartner allows all app visitors to:
+
 -Sign Up
+
 -Sign In
+
 -Sign Out
+
 -View Current Expeditions (dates and destinations only)
 
 Users may:
@@ -34,7 +38,7 @@ Built using:
 _Express, Node.js, MongoDB RESTful routing_
 
 Features within the app (I hope, ha!):
-
+-  **Bootstrap5**
 -  **Authentication**
 -  **CRUD**
 -  **Error Handling**
