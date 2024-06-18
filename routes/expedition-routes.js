@@ -4,7 +4,7 @@ const router = express.Router();
 const expeditions = require("../controllers/expedition-controller.js");
 
 router.route("/").get(expeditions.getExpeditions);
-router.route("/new").get(expeditions.newExpedition);
+router.route("/new").get(expeditions.getNewExpedition);
 /*
 router
 	.route("/signup")
