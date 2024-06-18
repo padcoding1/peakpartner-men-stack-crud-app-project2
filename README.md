@@ -1,17 +1,10 @@
 # PeakPartner
 
-\
-\
-\
+![Screenshot](https://github.com/padcoding1/peakpartner-men-stack-crud-app-project2/assets/150088969/46567d14-a73d-43f7-af9b-ee3b1bd25019)
 
-\
-\
-\
 
-\
-\
-\
-PeakPartner, a demonstration of a Full Stack (MEN) app with CRUD operations, is a platform where climbers and expedition leaders can register for and plan trips expeditions, respectively. **Expedition Leaders** can create scheduled **Expeditions** and **Climbers** can register for them. Climbers can see the **Destination** of a trip and the **Trip Dates**. In order to **register for a trip** and **join an Expedition**, or for any **expedition tasks (create, schedule, delete, add/remove climbers)**, all users must have an account with the appropriate **access level**. A registered user can have a **Climber** account or an **Expedition Leader** account. Leader accounts are essentially **Power Users**, capable of managing users and expeditions.
+
+**PeakPartner**, a demonstration of a Full Stack (MEN) app with CRUD operations, is a platform where climbers and expedition leaders can register for and plan trips expeditions, respectively. **Expedition Leaders** can create scheduled **Expeditions** and **Climbers** can register for them. Climbers can see the **Destination** of a trip and the **Trip Dates**. In order to **register for a trip** and **join an Expedition**, or for any **expedition tasks (create, schedule, delete, add/remove climbers)**, all users must have an account with the appropriate **access level**. A registered user can have a **Climber** account or an **Expedition Leader** account. Leader accounts are essentially **Power Users**, capable of managing users and expeditions.
 
 PeakPartner allows all app visitors to:
 -Sign Up
