@@ -3,9 +3,14 @@
 <%- include('../layouts/boilerplate')%>
 
 <h2 class="text-center">Sign Up</h2>
-<div class="row">
+<div class="row mx-auto">
 	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
-		<form action="/signup" method="POST" class="needs-validation" novalidate>
+		<form
+			action="/auth/signup"
+			method="POST"
+			class="needs-validation"
+			novalidate
+		>
 			<div class="form-group">
 				<label for="email">Email Address</label>
 				<input
@@ -65,7 +70,7 @@
 			<button type="submit" class="btn btn-block btn-primary">Submit</button>
 		</form>
 		<div class="text-center mt-4">
-			<span>Already registered? </span><a href="/login">Log In</a>
+			<span>Already registered? </span><a href="/auth/login">Log In</a>
 		</div>
 	</div>
 </div>

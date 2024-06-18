@@ -1,70 +1,97 @@
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const User = require("../models/user-model");
+const User = require("../models/user-model.js");
 
-module.exports.renderHome = (req, res, next) => {
+module.exports.getHome = (req, res, next) => {
 	try {
 		console.log(
-			"USER CONTROLLER--> renderHome | req.session.user: ",
+			"USER CONTROLLER--> getHome | req.session.user: ",
 			req.session.user
 		);
 		res.render("home.ejs", {
 			user: req.session.user,
 		});
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> renderHome");
+		console.log("ERROR! USER CONTROLLER--> getHome");
 		console.log(error);
 		//	res.redirect("/");
 	}
 };
-module.exports.renderLogin = (req, res) => {
+module.exports.getLogin = (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> renderLogin");
+		console.log("USER CONTROLLER--> getLogin");
 		res.render("auth/login.ejs");
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> renderLogin");
+		console.log("ERROR! USER CONTROLLER--> getLogin");
 		console.log(error);
 		res.redirect("/");
 	}
 };
-module.exports.renderSignup = (req, res) => {
+module.exports.getSignup = (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> renderSignup");
+		console.log("USER CONTROLLER--> getSignup");
 		console.log("");
 		res.render("auth/signup.ejs");
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> renderSignup");
+		console.log("ERROR! USER CONTROLLER--> getSignup");
 		console.log(error);
 		res.redirect("/");
 	}
 };
-module.exports.renderCreateProfile = async (req, res) => {
+module.exports.getCreateProfile = async (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> renderCreateProfile");
+		console.log("USER CONTROLLER--> getCreateProfile");
 		const userData = await User.findById(req.params._id);
 		res.render("auth/create-profile.ejs", { userData });
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> renderCreateProfile");
+		console.log("ERROR! USER CONTROLLER--> getCreateProfile");
 		console.log(error);
 		res.redirect("/");
 	}
 };
-module.exports.renderManageProfile = async (req, res) => {
+module.exports.getProfile = async (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> renderManageProfile");
+		console.log("USER CONTROLLER--> getProfile");
 		console.log;
-		const userData = await User.findById(req.params._id);
+		const userData = await User.findOne(req.params._id);
+		console.log("userdata: ", userData);
 		res.render("auth/manage-profile.ejs", { userData });
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> renderManageProfile");
+		console.log("ERROR! USER CONTROLLER--> getProfile");
 		console.log(error);
 		res.redirect("/");
 	}
 };
-
-module.exports.manageProfile = async (req, res) => {
+module.exports.putCreateProfile = async (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> manageProfile");
+		console.log("USER CONTROLLER--> createProfile");
+		console.log("-----");
+		console.log("REQ.session.user: ", req.body.owner);
+		console.log("REQ.SESSIONID: ", req.sessionID);
+		console.log("REQ.SESSION.USER.USERNAME: ", req.session.user.username);
+		console.log("REQ.SESSION.USER._ID: ", req.session.user._id);
+		console.log("");
+		console.log("REQ.userData: ", req.userData);
+		console.log("---req.session.user: ", req.body);
+		const userData = await User.findOne({
+			username: req.session.user.username,
+		});
+		console.log("userData: ", userData);
+		userData.set(req.body);
+		await userData.save();
+		console.log("");
+		console.log("userData: ", userData);
+		console.log("");
+		res.redirect("/");
+	} catch (error) {
+		console.log("ERROR! USER CONTROLLER--> putCreateProfile");
+		console.log(error);
+		res.redirect("/profile/create-profile");
+	}
+};
+module.exports.putProfile = async (req, res) => {
+	try {
+		console.log("USER CONTROLLER--> putProfile");
 		console.log("");
 		const userData = await User.findOne(req.session.user);
 		userData.set(req.body);
@@ -72,14 +99,49 @@ module.exports.manageProfile = async (req, res) => {
 
 		res.render("auth/manage-profile.ejs", { user: userData });
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> manageProfile");
+		console.log("ERROR! USER CONTROLLER--> putProfile");
 		console.log(error);
 		res.redirect("/create-profile");
 	}
 };
-module.exports.userSignup = async (req, res) => {
+module.exports.postLogin = async (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> userSignup");
+		console.log("USER CONTROLLER--> postLogin");
+		console.log(req.body);
+		const username = req.body.username;
+		console.log("const username: ", username);
+		const userInDatabase = await User.findOne({ username: username });
+
+		if (!userInDatabase) {
+			res.redirect("/auth/login");
+		}
+		// There is a user! Time to test their password with bcrypt
+		const validPassword = bcrypt.compareSync(
+			req.body.password,
+			userInDatabase.password
+		);
+		if (!validPassword) {
+			return res.send("Login failed. Incorrect Password. Please try again.");
+		}
+
+		// There is a user AND they had the correct password. Time to make a session!
+		// Avoid storing the password, even in hashed format, in the session
+		// If there is other data you want to save to `req.session.user`, do so here!
+		req.session.user = {
+			username: userInDatabase.username,
+			_id: userInDatabase._id,
+		};
+		console.log("REDIRECTION TO /  (home)");
+		res.redirect("/");
+	} catch (error) {
+		console.log("ERROR! USER CONTROLLER--> postLogin");
+		console.log(error);
+		res.redirect("/");
+	}
+};
+module.exports.postSignup = async (req, res) => {
+	try {
+		console.log("USER CONTROLLER--> postSignup");
 		console.log("");
 		//Trim the email and username for spaces
 		const email = req.body.email;
@@ -125,84 +187,32 @@ module.exports.userSignup = async (req, res) => {
 		console.log(userInDatabase);
 		console.log("!!!!!!!!!USER CREATED!!!!!!!!!");
 		//Redirect to the create profile page
+		console.log("RENDERING CREATE PROFILE.EJS");
 		res.render(`auth/create-profile.ejs`, { userData: userInDatabase });
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> userSignup");
+		console.log("ERROR! USER CONTROLLER--> postSignup");
 		console.log(error);
 		res.redirect("/signup");
 	}
 };
-module.exports.createProfile = async (req, res) => {
+module.exports.deleteProfile = async (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> createProfile");
-		console.log("-----");
-		console.log("REQ.session.user: ", req.body.owner);
-		console.log("REQ.SESSIONID: ", req.sessionID);
-		console.log("REQ.SESSION.USER.USERNAME: ", req.session.user.username);
-		console.log("REQ.SESSION.USER._ID: ", req.session.user._id);
-		console.log("");
-		console.log("REQ.userData: ", req.userData);
-		console.log("---req.session.user: ", req.body);
-		const userData = await User.findOne({
-			username: req.session.user.username,
-		});
-		console.log("userData: ", userData);
-		userData.set(req.body);
-		await userData.save();
-		console.log("");
-		console.log("userData: ", userData);
-		console.log("");
+		await Recipe.findByIdAndDelete(req.params._id);
 		res.redirect("/");
+		console.log("redirecting to /recipes/");
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> createProfile");
-		console.log(error);
-		res.redirect("/profile/create-profile");
+		console.log("ERROR: delete /:id", error);
+		res.redirect("/recipes");
 	}
 };
 
-module.exports.userLogin = async (req, res) => {
+module.exports.getLogout = (req, res) => {
 	try {
-		console.log("USER CONTROLLER--> userLogin");
-		console.log(req.body);
-		const username = req.body.username;
-		console.log("const username: ", username);
-		const userInDatabase = await User.findOne({ username: username });
-
-		if (!userInDatabase) {
-			return res.send(
-				"Login failed. Username does not exist. Please try again."
-			);
-		}
-		// There is a user! Time to test their password with bcrypt
-		const validPassword = bcrypt.compareSync(
-			req.body.password,
-			userInDatabase.password
-		);
-		if (!validPassword) {
-			return res.send("Login failed. Incorrect Password. Please try again.");
-		}
-
-		// There is a user AND they had the correct password. Time to make a session!
-		// Avoid storing the password, even in hashed format, in the session
-		// If there is other data you want to save to `req.session.user`, do so here!
-		req.session.user = {
-			username: userInDatabase.username,
-			_id: userInDatabase._id,
-		};
-		res.redirect("/");
-	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> userLogin");
-		console.log(error);
-		res.redirect("/");
-	}
-};
-module.exports.userLogout = (req, res) => {
-	try {
-		console.log("USER CONTROLLER--> userLogout");
+		console.log("USER CONTROLLER--> getLogout");
 		req.session.destroy(); //Logout user
 		res.redirect("/");
 	} catch (error) {
-		console.log("ERROR! USER CONTROLLER--> userLogout");
+		console.log("ERROR! USER CONTROLLER--> getLogout");
 		console.log(error);
 		res.redirect("/");
 	}

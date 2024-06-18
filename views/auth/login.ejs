@@ -4,7 +4,12 @@
 <h2 class="text-center">Log In</h2>
 <div class="row mx-auto">
 	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
-		<form action="/login" method="POST" class="needs-validation" novalidate>
+		<form
+			action="/auth/login"
+			method="POST"
+			class="needs-validation"
+			novalidate
+		>
 			<div class="form-group">
 				<label for="username">Username</label>
 				<input
@@ -33,7 +38,7 @@
 			</div>
 			<button type="submit" class="btn btn-block btn-primary">Login</button>
 			<div class="text-center mt-4">
-				<span>Not signed up? </span><a href="/signup">Sign Up</a>
+				<span>Not signed up? </span><a href="/auth/signup">Sign Up</a>
 			</div>
 		</form>
 	</div>

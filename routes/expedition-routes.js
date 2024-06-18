@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const expeditions = require("../controllers/expedition-controller.js");
 
-//router.route("/").get(expeditions.expeditionSession);
+router.route("/").get(expeditions.getExpeditions);
 /*
 router
 	.route("/signup")

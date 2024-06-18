@@ -24,15 +24,23 @@ app.use(morgan("dev"));
 const Model = require("./models/index.js");
 
 //Routes (Remember that middleware will run before the route, WATCH ORDER)
-const guestRoutes = require("./routes/guest-routes.js");
 const userRoutes = require("./routes/user-routes.js");
+const teamRoutes = require("./routes/team-routes.js");
 const expeditionRoutes = require("./routes/expedition-routes.js");
 
 //Controllers
 const guestController = require("./controllers/guest-controller.js"); //Using a Controller instead of Routes
 const userController = require("./controllers/user-controller.js");
-const teamController = require("./controllers/user-controller.js");
+const teamController = require("./controllers/team-controller.js");
 const expeditionController = require("./controllers/expedition-controller.js");
+
+//MongoDB Database Setup
+mongoose.connect(process.env.MONGODB_URI);
+
+mongoose.connection.on("connected", () => {
+	console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
+});
+
 //Creating User Session with express-session and Storing with MongoStore/connect-mongo
 app.use(
 	session({
@@ -44,20 +52,21 @@ app.use(
 );
 
 //Routes
-app.use("/guest", guestRoutes);
 app.use(passUserToView);
-app.use("/team", teamRoutes);
-app.use("/expedition", expeditionRoutes);
-app.use("/user", userRoutes);
-app.use(isSignedIn);
-// app.use("/exmple/:id/reviews", reviewRoutes);
-
-//MongoDB Database Setup
-mongoose.connect(process.env.MONGODB_URI);
-
-mongoose.connection.on("connected", () => {
-	console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
+app.get("/", async (req, res) => {
+	if (req.session.user) {
+		user: req.session.user, res.render("home.ejs");
+		// res.redirect(`/auth/${req.session.user._id}/my-expeditions`);
+	} else {
+		res.render("home.ejs");
+	}
 });
+app.use("/auth", userRoutes);
+app.use(isSignedIn);
+app.use("/team", teamRoutes);
+app.use("/expeditions", expeditionRoutes);
+
+// app.use("/exmple/:id/reviews", reviewRoutes);
 
 //Port Listener
 const port = process.env.PORT ? process.env.PORT : "3000";

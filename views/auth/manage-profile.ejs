@@ -1,29 +1,11 @@
 <!--/views/auth/login.ejs AUTH/MANAGE-PROFILE.ejs-->
-<script type="text/javascript">
-
-	window.addEventListener("DOMContentLoaded", ()=> {
-		document.getElementById('my-form').addEventListener("update", (button) => {
-			button.preventDefault(); // before the code
-			document.getElementById('form').action = "/profile>?_method=PUT";
-			console.log("UPDATE/PUT");
-		})
-
-		document.getElementById('form').addEventListener("delete", (button) => {
-			button.preventDefault(); // before the code
-			document.getElementById('form').action = "/profile";
-			document.getElementById('form').method = "DELETE";
-			console.log("DELETE");
-		})
-	});
-
-</script>
 <%- include('../layouts/boilerplate')%>
 <div id="main-title"></div>
 	
 <div class="container-fluid min-vh-100">
 	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
 		<form
-		action="/profile>?_method=PUT"
+		action="/auth/profile?_method=PUT"
 		method="POST"
 		id="form"
 		class="needs-validation"
@@ -150,9 +132,22 @@
 			<button type="submit" id="delete" class="btn btn-block btn-primary" style="visibility: hidden;" >Delete</button>
 		</form>
 	</div>
-</div>
+</div> 
 <script type="text/javascript">
-
+	 window.addEventListener("DOMContentLoaded", ()=> {
+ 	document.getElementById('update').addEventListener("click", (button) => {
+ 		button.preventDefault(); // before the code/ 		
+		document.getElementById('form').action = "/profile>?_method=PUT";
+ 		console.log("UPDATE/PUT");
+	 	})
+		 document.getElementById('delete').style.backgroundColor = "rgb(135,19,19,0.8)";
+	document.getElementById('delete').addEventListener("delete", (button) => {
+		button.preventDefault(); // before the code
+		document.getElementById('form').action = "/profile";
+		document.getElementById('form').method = "DELETE";
+		console.log("DELETE");
+	})
+});
 	const userData = <%- JSON.stringify(userData) %>;
 	
 	function isLeaderSelected(user) {
@@ -167,7 +162,7 @@
 			
 		}
 	}
-	function update() {
+	function submitButton() {
 		if (document.querySelector("#editbox").checked === false) {
 			document.querySelector("#update").style.visibility = 'hidden';
 			document.querySelector("#delete").style.visibility = 'hidden';
@@ -201,7 +196,6 @@
 
 	
 
-	
-	
-	
+</script>
+
 </script>

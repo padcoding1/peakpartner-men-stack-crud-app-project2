@@ -3,12 +3,11 @@
 <%- include('../layouts/boilerplate')%>
 
 <h2 class="text-center">Create Profile for <span style="color:rgb(25, 197, 65);"><%= userData.username %></span><h2>
-	<h4><%= userData._id%></h4>
 
 <div class="container-fluid min-vh-100">
 	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
 		<form
-			action="/profile?_method=PUT"
+			action="/auth/profile?_method=PUT"
 			method="POST"
 			class="needs-validation"
 			novalidate

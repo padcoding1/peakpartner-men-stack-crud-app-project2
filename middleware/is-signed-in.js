@@ -1,16 +1,15 @@
 // is-signed-in.js
 
-const isSignedIn = (req, res) => {
-	console.log(
-		"MIDDLEWARE--> isSignedIn | req.session.user: ",
-		req.session.user
-	);
-	if (req.session.user) {
-		console.log("USER EXISTS, YAY :)");
-		console.log(req.session.user);
-		//return next();
+const isSignedIn = (req, res, next) => {
+	try {
+		if (req.session.user) {
+			return next();
+		}
+		res.redirect("/auth/login");
+	} catch (error) {
+		console.log("ERROR: isSignedIn", error);
+		res.redirect("/");
 	}
-	res.redirect("/login");
 };
 
 module.exports = isSignedIn;

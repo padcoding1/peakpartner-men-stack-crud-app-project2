@@ -2,22 +2,24 @@
 const express = require("express");
 const router = express.Router();
 const users = require("../controllers/user-controller.js");
+const methodOverride = require("method-override");
 
 //router.route("/").get(users.userSession);
-router.route("/signup").get(users.renderSignup).post(users.userSignup); //User GET and POST request
+router.route("/signup").get(users.getSignup).post(users.postSignup); //User GET and POST request
 
 //router.route("/profile/quick").get(users.quick).put(users.createProfile);
+router.route("/login").get(users.getLogin).post(users.postLogin);
+router.get("/logout", users.getLogout);
+//router.route("/profile").get(users.getProfile).post(users.putCreateProfile);
 router
-	.route("/profile/:_id")
-	.get(users.renderManageProfile)
-	.post(users.manageProfile);
+	.route("/profile/manage")
+	.get(users.getProfile)
+	.put(users.putProfile)
+	.delete(users.deleteProfile);
 router
 	.route("/profile")
-	.get(users.renderCreateProfile)
-	.put(users.createProfile); //Since we're actually modifying a user, this is a PUT request
-router.route("/login").get(users.renderLogin).post(users.userLogin);
-router.get("/logout", users.userLogout);
-
-router.route("/").get(users.renderHome);
+	.get(users.getCreateProfile)
+	.put(users.putCreateProfile); //Since we're actually modifying a user, this is a PUT request
+router.route("/").get(users.getHome);
 
 module.exports = router;
