@@ -1,7 +1,53 @@
-<!--/views/auth/login.ejs AUTH/CREATE-PROFILE.ejs-->
+<!-- See the most beautiful and scenic Campgrounds across the world. Download, edit the text, and add your own campground photos to make it memorable. -->
 
-<%- include('../layouts/boilerplate')%>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PeakPartner</title>
+		<!-- <link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+			integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+			crossorigin="anonymous"
+		/> -->
+		<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+		<link rel="stylesheet" href="/stylesheets/home.css" />
+		<style>
+			@media only screen and (max-width: 540px) {
+				.res {
+					font-size: 1rem;
+				}
+			}
+		</style>
+	</head>
 
+	<body class="d-flex text-center text-white bg-dark">
+		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			<%- include('../partials/navbar') %>
+			<header class="mb-auto">
+				<div>
+					<h3 class="float-md-left mb-0"></h3>
+					<!-- <nav
+						class="nav nav-masthead justify-content-center float-md-right res"
+					>
+						<a class="nav-link active" aria-current="page" href="#"
+							>Home</a
+						>
+						<a class="nav-link" href="/expeditions">Expeditions</a>
+						
+						<% if(!user) { %>
+						<a class="nav-link" href="/login">Login</a>
+						<a class="nav-link" href="/signup">Sign Up</a>
+						<% } else { %>
+						<a class="nav-link" href="/logout">Logout</a>
+						<% } %>
+					</nav> -->
+				</div>
+			</header>
+
+			<main class="px-3">
 <h2 class="text-center">Create Profile for <span style="color:rgb(25, 197, 65);"><%= userData.username %></span><h2>
 
 <div class="container-fluid min-vh-100">
@@ -138,6 +184,8 @@
 		</form>
 	</div>
 </div>
+</div>
+</main>
 <script type="text/javascript">
 	console.log("Running script...");
 	function leaderSelected() {

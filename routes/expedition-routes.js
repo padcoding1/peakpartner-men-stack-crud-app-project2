@@ -4,7 +4,10 @@ const router = express.Router();
 const expeditions = require("../controllers/expedition-controller.js");
 
 router.route("/").get(expeditions.getExpeditions);
-router.route("/new").get(expeditions.getNewExpedition);
+router
+	.route("/new")
+	.get(expeditions.getNewExpedition)
+	.post(expeditions.postNewExpedition);
 /*
 router
 	.route("/signup")

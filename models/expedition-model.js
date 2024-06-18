@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 
 const expeditionSchema = new mongoose.Schema({
+	destination: String,
+	start_date: Date,
+	end: Date,
+	num_climbers: Number,
+	num_leaders: Number,
+	price: Number,
+	description: String,
 	users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	team: [{ type: mongoose.Schema.Types.ObjectId, ref: "Team" }],
 });
