@@ -1,0 +1,207 @@
+<!--/views/auth/login.ejs AUTH/MANAGE-PROFILE.ejs-->
+<script type="text/javascript">
+
+	window.addEventListener("DOMContentLoaded", ()=> {
+		document.getElementById('my-form').addEventListener("update", (button) => {
+			button.preventDefault(); // before the code
+			document.getElementById('form').action = "/profile>?_method=PUT";
+			console.log("UPDATE/PUT");
+		})
+
+		document.getElementById('form').addEventListener("delete", (button) => {
+			button.preventDefault(); // before the code
+			document.getElementById('form').action = "/profile";
+			document.getElementById('form').method = "DELETE";
+			console.log("DELETE");
+		})
+	});
+
+</script>
+<%- include('../layouts/boilerplate')%>
+<div id="main-title"></div>
+	
+<div class="container-fluid min-vh-100">
+	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
+		<form
+		action="/profile>?_method=PUT"
+		method="POST"
+		id="form"
+		class="needs-validation"
+		novalidate
+		
+		>
+			<fieldset id="fieldset" disabled>
+				<div class="form-group">
+					<label for="first_name">First Name</label>
+					<input
+						type="text"
+						class="form-control"
+						name="first_name"
+						id="first_name"
+						value="<%= userData.first_name %>"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="last_name">Last Name</label>
+					<input
+						type="text"
+						class="form-control"
+						name="last_name"
+						id="last_name"
+						value="<%= userData.last_name %>"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="age">Age</label>
+					<input
+						type="number"
+						class="form-control"
+						name="age"
+						id="age"
+						value="<%= userData.age %>"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<label for="gender">Gender</label>
+					<select class="form-control" name="gender" id="gender" value="<%= userData.gender %>"/>required>
+						<option value="Female">Male</option>
+						<option value="Male">Female</option>
+						<option value="non-binary">Non-Binary</option>
+						<option value="other">Other</option>
+						<option value="Prefer not to answer">
+							Prefer not to answer
+						</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="trips_taken"
+						>Number of Expeditions as a Climber</label
+					>
+					<input
+						type="number"
+						class="form-control"
+						name="trips_taken"
+						id="trips_taken"
+						value="<%= userData.trips_taken %>"
+						required
+					/>
+				</div>
+				<div class="form-group">
+					<div id="leader_question" style="display: none;">
+						<label class="from-check-label" for="is_leader"
+							>Are you an Expedition Leader?</label
+						>
+						<select
+							class="form-control"
+							name="is_leader"
+							id="is_leader"
+							required
+							value="<%= userData.is_leader %>"
+						>
+							<option value="false">No</option>
+							<option value="true" selected>Yes</option>
+						</select>
+				</div>
+				<fieldset id="leader_questions">
+					<div class="form-group">
+						<label for="trips_led">Number of Expeditions as Leader</label>
+						<input
+							type="number"
+							class="form-control"
+							name="trips_led"
+							id="trips_led"
+							value="<%= userData.trips_led %>"/>
+						
+					</div>
+					<div class="form-group">
+						<label for="experience"
+							>Experience</label
+						>
+						<input
+							type="text"
+							class="form-control"
+							name="experience"
+							id="experience"
+							value="<%= userData.experience %>"/>
+						
+					</div>
+					<div class="form-group">
+						<label for="certifications"
+							>Please list any organization certifications</label
+						>
+						<input
+							type="text"
+							class="form-control"
+							name="certifications"
+							id="certifications"
+							value="<%= userData.certifications %>"/>
+						
+					</div>
+				</fieldset>
+			</fieldset>
+			<div class="form-group form-check">
+				<input type="checkbox" class="form-check-input" id="editbox"/>
+				<label class="form-check-label" for="editbox">Click to Edit Profile</label>
+			</div>
+			<button type="submit" id="update" class="btn btn-block btn-primary" style="visibility: hidden;" >Update</button>
+			<button type="submit" id="delete" class="btn btn-block btn-primary" style="visibility: hidden;" >Delete</button>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+
+	const userData = <%- JSON.stringify(userData) %>;
+	
+	function isLeaderSelected(user) {
+		if (user.is_leader === false) {
+			//document.getElementById("is_leader").value = document.getElementById("is_leader").options[0]; 
+			document.querySelector("#leader_questions").style.display = 'none';
+			document.getElementById('main-title').innerHTML = `<h2 class="text-center">Manage Profile for <%= userData.username %><br><span style="color:rgb(25, 197, 65);">Climber</span></h2>`;
+		} else {
+			//document.getElementById("is_leader").value = document.getElementById("is_leader").options[1]; 
+			document.querySelector("#leader_questions").style.display = "block";
+			document.getElementById('main-title').innerHTML = `<h2 class="text-center">Manage Profile for <%= userData.username %><br><span style="color:rgb(7, 118, 198);">Expedition Leader</span></h2>`;
+			
+		}
+	}
+	function update() {
+		if (document.querySelector("#editbox").checked === false) {
+			document.querySelector("#update").style.visibility = 'hidden';
+			document.querySelector("#delete").style.visibility = 'hidden';
+		}
+		if (document.querySelector("#editbox").checked !== false) {
+			document.querySelector("#update").style.visibility = 'visible';	
+			document.querySelector("#delete").style.visibility = 'visible';	
+		}
+	}
+	function isLeaderQuestionHidden() {
+		if (document.querySelector("#editbox").checked === false) {
+			document.querySelector("#leader_question").style.display = 'none';
+		}
+		if (document.querySelector("#editbox").checked !== false) {
+		document.querySelector("#leader_question").style.display = 'block';
+		}      
+	}
+	const fieldset = document.getElementById("fieldset");
+	const leaderFieldset = document.getElementById("leader_questions");
+	const leaderQuestion = document.getElementById("leader_question");
+	const editbox = document.getElementById("editbox");
+	
+	isLeaderSelected(userData);
+	leaderQuestion.addEventListener("change", isLeaderSelected);
+	editbox.addEventListener("click", () => {
+		submitButton();
+		isLeaderQuestionHidden();
+		isLeaderSelected(userData);
+    	fieldset.disabled = !fieldset.disabled;
+	});
+
+	
+
+	
+	
+	
+</script>

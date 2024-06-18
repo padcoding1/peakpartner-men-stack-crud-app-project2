@@ -1,4 +1,6 @@
 //PeakPartner app.js (MAIN SERVER/APP PAGE)
+
+//Modules
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -10,80 +12,51 @@ const morgan = require("morgan");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
-//Models
-const User = require("./models/user");
-const Campground = require("./models/campground");
-
 //Middleware
 const isSignedIn = require("./middleware/is-signed-in.js");
 const passUserToView = require("./middleware/pass-user-to-view.js");
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 
-//Route Requirements
-const campgroundRoutes = require("./routes/campgrounds");
-const userRoutes = require("./routes/users");
-const reviewRoutes = require("./routes/reviews");
+//Models (exported from index.js, which pulls from model files (expedition.js, user.js))
+const Model = require("./models/index.js");
+
+//Routes (Remember that middleware will run before the route, WATCH ORDER)
+const guestRoutes = require("./routes/guest-routes.js");
+const userRoutes = require("./routes/user-routes.js");
+const expeditionRoutes = require("./routes/expedition-routes.js");
 
 //Controllers
-const authController = require("./controllers/auth.js");
-const recipesController = require("./controllers/recipes.js");
-const ingredientsController = require("./controllers/ingredients.js");
+const guestController = require("./controllers/guest-controller.js"); //Using a Controller instead of Routes
+const userController = require("./controllers/user-controller.js");
+const teamController = require("./controllers/user-controller.js");
+const expeditionController = require("./controllers/expedition-controller.js");
+//Creating User Session with express-session and Storing with MongoStore/connect-mongo
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		saveUninitialized: true,
+		resave: false,
+		store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+	})
+);
 
 //Routes
+app.use("/guest", guestRoutes);
 app.use(passUserToView);
-app.use("/auth", authController);
+app.use("/team", teamRoutes);
+app.use("/expedition", expeditionRoutes);
+app.use("/user", userRoutes);
 app.use(isSignedIn);
-app.use("/recipes", recipesController);
-app.use("/ingredients", ingredientsController);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/reviews", reviewRoutes);
-app.use("/", userRoutes);
+// app.use("/exmple/:id/reviews", reviewRoutes);
 
-//!!!!!!!!!!
-const localDbUrl = "mongodb://localhost:27017/PeakPartner";
-
-/** MongoDB Database Setup */
+//MongoDB Database Setup
 mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on("connected", () => {
 	console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
-});
-
-//Session Storing
-
-//!!!!!!!!!!
-
-app.use(
-	session({
-		store: MongoStore.create({ mongoUrl: "mongodb://localhost/PeakPartner" }),
-	})
-);
-
-store.on("error", function (error) {
-	console.log("MongoStore SESSION ERROR", error);
-});
-
-//Creating User Session
-app.use(
-	session({
-		secret: process.env.SESSION_SECRET,
-		resave: false,
-		saveUninitialized: true,
-	})
-);
-
-app.get("/", (req, res) => {
-	console.log("GET app.js '/' (render index.ejs)");
-	res.render("index.ejs", {
-		user: req.session.user,
-	});
-});
-
-app.get("/", (req, res) => {
-	res.render("home.ejs");
 });
 
 //Port Listener

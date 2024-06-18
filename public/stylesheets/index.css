@@ -1,0 +1,11 @@
+.card{
+    box-shadow: 1px 3px 12px rgb(170, 170, 170);
+    transition: ease 300ms;
+}
+.card:hover{
+    transform: scale(1.05);
+
+}
+.cardDiv a{
+    text-decoration: none;
+}

@@ -1,0 +1,158 @@
+<!--/views/auth/login.ejs AUTH/CREATE-PROFILE.ejs-->
+
+<%- include('../layouts/boilerplate')%>
+
+<h2 class="text-center">Create Profile for <span style="color:rgb(25, 197, 65);"><%= userData.username %></span><h2>
+	<h4><%= userData._id%></h4>
+
+<div class="container-fluid min-vh-100">
+	<div class="col-10 col-lg-6 offset-1 offset-lg-3">
+		<form
+			action="/profile?_method=PUT"
+			method="POST"
+			class="needs-validation"
+			novalidate
+		>
+			<div class="form-group">
+				<label for="first_name">First Name</label>
+				<input
+					type="text"
+					class="form-control"
+					name="first_name"
+					id="first_name"
+					placeholder="Jayne, etc"
+					required
+				/>
+			</div>
+			<div class="form-group">
+				<label for="last_name">Last Name</label>
+				<input
+					type="text"
+					class="form-control"
+					name="last_name"
+					id="last_name"
+					placeholder="Cobb, etc"
+					required
+				/>
+			</div>
+			<div class="form-group">
+				<label for="age">Age</label>
+				<input
+					type="number"
+					class="form-control"
+					name="age"
+					id="age"
+					placeholder="18+"
+					required
+				/>
+			</div>
+			<div class="form-group">
+				<label for="gender">Gender</label>
+				<select class="form-control" name="gender" id="gender" required>
+					<option value="Female">Male</option>
+					<option value="Male">Female</option>
+					<option value="non-binary">Non-Binary</option>
+					<option value="other">Other</option>
+					<option value="Prefer not to answer">
+						Prefer not to answer
+					</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="trips_taken"
+					>How many expeditions have you participated in?</label
+				>
+				<input
+					type="number"
+					class="form-control"
+					name="trips_taken"
+					id="trips_taken"
+					placeholder="Enter a number"
+					required
+				/>
+			</div>
+            <div class="form-group">
+				<label for="experience"
+					>Describe your prior climbing/mountaineering experience</label
+				>
+				<input
+					type="textarea"
+					class="form-control"
+					name="experience"
+					id="experience"
+					placeholder="Description of your experience here."
+					required
+				/>
+			</div>
+
+			<div class="form-group">
+				<label class="from-check-label" for="is_leader"
+					>Are you an Expedition Leader?</label
+				>
+				<select
+					class="form-control"
+					name="is_leader"
+					id="is_leader"
+                    default="No"
+					required
+				>
+                    <option value="false" selected>No</option>
+				    <option value="true">Yes</option>
+				</select>
+				<div id="leader_questions" style="display: none;">
+				<div class="form-group">
+					<label for="trips_led">How many expeditions have you led?</label>
+					<input
+						type="number"
+						class="form-control"
+						name="trips_led"
+						id="trips_led"
+						placeholder="Enter a number"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="leader_experience"
+						>Please list notable prior experience</label
+					>
+					<input
+						type="textarea"
+						class="form-control"
+						name="leader_experience"
+						id="leader_experience"
+						placeholder="Everest May 2024, K2 August 2023, etc"
+					/>
+				</div>
+				<div class="form-group">
+					<label for="certifications"
+						>Please list any organization certifications</label
+					>
+					<input
+						type="text"
+						class="form-control"
+						name="certifications"
+						id="certifications"
+						placeholder="IFMGA, AMGA, NNMGA, etc"
+					/>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-block btn-primary">Submit</button>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	console.log("Running script...");
+	function leaderSelected() {
+			if (isLeader.value == "true") {
+				console.log("Creating Additional Questions...");
+				const leaderQuestions = document.getElementById("leader_questions");
+				leaderQuestions.style.display = 'block';
+			}
+            if (isLeader.value == "false") {
+				console.log("Removing Additional Questions...");
+				const leaderQuestions = document.getElementById("leader_questions");
+				leaderQuestions.style.display = 'none';
+			}
+		}
+	const isLeader = document.getElementById("is_leader");
+	isLeader.addEventListener("change", leaderSelected);
+</script>

@@ -1,0 +1,27 @@
+<!-- views/expeditions/expeditions-index.ejs -->
+ 
+<%- layout('layouts/boilerplate') %>
+<title>Expeditions</title>
+<body>
+    <%- include('../partials/_navbar') %>
+    <h1>Welcome to My Recipes</h1>
+    <a href="/recipes/new"><button>Add New Recipe</button></a>
+        <% console.log(allRecipes.length); %>
+        <% if (allRecipes.length === 0) { %>
+            <h3>You have not created any recipes yet.</h3>
+            <% } %>
+        <% allRecipes.forEach(function(recipe) { %>
+            <h5><a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a></h5></li> 
+          <ul>
+              <li><h5>Ingredients: <%= recipe.ingredients %></h5></li>
+              <li><h5>Instructions: <%= recipe.instructions %></h5></li>
+          </ul>
+      <% }) %>
+ 
+
+  </body>
+  <script>
+       
+  </script>
+
+</html>

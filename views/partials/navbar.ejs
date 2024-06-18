@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+	<div class="container-fluid">
+		<!-- <a class="navbar-brand h1" href="/">PeakPartner</a> -->
+		<h3 class="float-md-left mb-0">PeakPartner</h3>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent"
+			aria-expanded="false"
+			aria-label="Toggle navigation"
+		>
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto"></ul>
+
+			<% if(!user) { %>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/expeditions/guest">Expeditions</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/signup">Sign Up</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/login">Login</a>
+				</li>
+			</ul>
+
+			<% } else { %>
+			<ul class="navbar-nav ml-auto">
+				<!-- <li class="nav-item" id="profilelink">
+					 <script>
+						const User = require("../models/user");
+
+						if ( !== undefined) {
+							document.getElementById(
+								"profilelink"
+							).innerHTML = `<a class="nav-link" href="/profile<%=  %>">Profile</a>`;
+						} else {
+							document.getElementById(
+								"profilelink"
+							).innerHTML = `<a class="nav-link" href="/profile">Profile</a>`;
+						}
+					</script> 
+					<a class="nav-link" href="/profile/quick">Profile</a>
+					Trying to see if i can make the profile link dynamic -->
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/expeditions">Expeditions</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/logout">Log out</a>
+				</li>
+			</ul>
+			<% } %>
+		</div>
+	</div>
+</nav>
